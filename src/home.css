@@ -1,0 +1,51 @@
+.flexBox {
+    display: flex
+}
+
+
+.Welcome-formFormat-18 {
+    z-index: 1;
+}
+
+header {
+    box-shadow: 0px 0px 0px 0px !important;
+}
+
+.halfPage {
+    min-width: 50vw;
+    min-height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    background-color: #303030;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/95/World_map_green.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: grayscale(1);
+    background-size: contain;
+}
+
+.introText {
+    width: 75%;
+    margin: auto;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: #fff
+}
+
+.introText .innerBox {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.socialIcon {
+    height: 50px;
+    width: 50px;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+.Welcome-formFormat-18 {}

@@ -12,39 +12,13 @@ import withStyles from '@material-ui/core/styles/withStyles'
 
 import axios from 'axios'
 
-const styles = {
-    formFormat: {
-        marginLeft: 'auto',
-        backgroundColor: '#fff',
-        borderRadius: '2px',
-        textAlign: 'center',
-        boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
-        padding: '20px',
-    },
-    pageTitle: {
-        fontSize: '3rem'
-    },
-    pageLogo: {
-        height: '64px',
-        width: '64px',
-    },
-    textField: {
-        marginBottom: '20px'
-    },
-    submitButton: {
-        color: '#6a22a1',
-        border: '1px solid #6a22a1',
-        marginTop: '10px'
-    },
-    errorMessage: {
-        color: 'red',
-        fontSize: '0.8rem',
-        margin: '10px'
-    },
-    loadingSpinner:{
-        position: 'absolute'
-    }
-}
+//redux
+import { connect } from 'react-redux'
+import { loginUser } from '../redux/actions/userActions'
+
+const styles = theme => ({
+    ...theme.pageStyles
+})
 
 
 
@@ -55,35 +29,26 @@ export class login extends Component {
         this.state = {
             email: '',
             password: '',
-            loading: false,
             errors: {}
         }
     }
+    componentWillReceiveProps(nextProps){
+        if (nextProps.UI.errors) {
+            this.setState({ errors: nextProps.UI.errors })
+        }
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({
-            loading: true
-        });
+
 
         const userData = {
             email: this.state.email,
             password: this.state.password
         };
         
-        axios.post('/login', userData)
-            .then(res => {
-                console.log(res.data);
-                this.setState({
-                    loading: false
-                })
-                this.props.history.push('/');
-            })
-            .catch(err => {
-                this.setState({
-                    errors: err.response.data,
-                    loading: false
-                })
-            })
+        this.props.loginUser(userData, this.props.history);
+
     }
 
     handleChange = (event) => {
@@ -93,8 +58,8 @@ export class login extends Component {
     }
 
     render() {
-        const { errors, loading } = this.state;
-        const { classes } = this.props;
+        const { errors } = this.state;
+        const { classes, UI: { loading } } = this.props;
 
         return (
             <div className={classes.formFormat}>
@@ -132,6 +97,17 @@ export class login extends Component {
                             {errors.general}
                         </Typography>
                     )}
+                        {errors.error == "auth/too-many-requests" ? (
+                            <Typography variant="body2" className={classes.errorMessage}>
+                                There have been too many incorrect login attempts, please wait 10 minutes and try again.
+                            </Typography>
+                        ) : errors.error ? (
+                            <Typography variant="body2" className={classes.errorMessage}>
+                            The email and password that you entered did not match our records. Please double-check and try again.
+                            </Typography>
+                        ) : (
+                            <Typography/>
+                        )}
                     <Button 
                         type="submit" 
                         variant="outlined" 
@@ -153,7 +129,19 @@ export class login extends Component {
 }
 
 login.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    loginUser: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
+    UI: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(login)
+const mapStateToProps = state => ({
+    user: state.user,
+    UI: state.UI
+})
+
+const mapActionsToProps =  {
+    loginUser
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(login))

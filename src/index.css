@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.NavBar-wrapperDiv-15 form input {
+  color: #fff !important;
+}
+
+.NavBar-wrapperDiv-15 form label {
+  color: #777 !important;
+}
+
+.NavBar-wrapperDiv-15 form button:disabled {
+  color: #777 !important;
+  border-color: #777 !important;
+}
+
+.NavBar-wrapperDiv-15 form button {
+  margin: 10px 0px !important;
+}
+
+.navContainer{
+  padding: 0px !important;
+}

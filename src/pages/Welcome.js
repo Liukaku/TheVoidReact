@@ -10,30 +10,38 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { TextareaAutosize } from '@material-ui/core'
 import withStyles from '@material-ui/core/styles/withStyles'
 
-import { connect } from 'react-redux'
-import { signupUser } from '../redux/actions/userActions'
-
 import axios from 'axios'
 
+//redux
+import { connect } from 'react-redux'
+import { loginUser } from '../redux/actions/userActions'
+
 const styles = theme => ({
-    ...theme.pageStyles
+    ...theme.pageStyles,
+    formFormat:{
+        marginLeft: "70%",
+        marginTop: "15%",
+        width: "75vw",
+        backgroundColor: '#fff',
+        borderRadius: '2px',
+        textAlign: 'center',
+        boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
+        padding: '20px',
+    }
 })
 
 
 
-export class Signup extends Component {
+export class Welcome extends Component {
     //controlled component form handling
     constructor(){
         super()
         this.state = {
             email: '',
             password: '',
-            confirmPassword: '',
-            handle: '',
             errors: {}
         }
     }
-
     componentWillReceiveProps(nextProps){
         if (nextProps.UI.errors) {
             this.setState({ errors: nextProps.UI.errors })
@@ -42,18 +50,15 @@ export class Signup extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({
-            loading: true
-        });
 
-        const newUserData = {
+
+        const userData = {
             email: this.state.email,
-            password: this.state.password,
-            confirmPassword: this.state.confirmPassword,
-            handle: this.state.handle
+            password: this.state.password
         };
         
-        this.props.signupUser(newUserData, this.props.history)
+        this.props.loginUser(userData, this.props.history);
+
     }
 
     handleChange = (event) => {
@@ -69,9 +74,6 @@ export class Signup extends Component {
         return (
             <div className={classes.formFormat}>
                 <img src={AppIcon} alt="the void image" className={classes.pageLogo}/>
-                <Typography variant="h1" className={classes.pageTitle}>
-                    Signup Page
-                </Typography>
                 <form noValidate onSubmit={this.handleSubmit}>
                     <TextField 
                         id="email" 
@@ -97,35 +99,22 @@ export class Signup extends Component {
                         helperText={errors.password} 
                         error={errors.password ? true : false}
                     />
-                    <TextField 
-                        id="confirmPassword" 
-                        name="confirmPassword" 
-                        type="password" 
-                        label="Confirm Password" 
-                        className={classes.textField}
-                        value={this.state.confirmPassword} 
-                        onChange={this.handleChange} 
-                        fullWidth 
-                        helperText={errors.confirmPassword} 
-                        error={errors.confirmPassword ? true : false}
-                    />
-                    <TextField 
-                        id="handle" 
-                        name="handle" 
-                        type="text" 
-                        label="Handle" 
-                        className={classes.textField}
-                        value={this.state.handle} 
-                        onChange={this.handleChange} 
-                        fullWidth 
-                        helperText={errors.handle} 
-                        error={errors.handle ? true : false}
-                    />
                     {errors.general && (
                         <Typography variant="body2" className={classes.errorMessage}>
                             {errors.general}
                         </Typography>
                     )}
+                        {errors.error == "auth/too-many-requests" ? (
+                            <Typography variant="body2" className={classes.errorMessage}>
+                                There have been too many incorrect login attempts, please wait 10 minutes and try again.
+                            </Typography>
+                        ) : errors.error ? (
+                            <Typography variant="body2" className={classes.errorMessage}>
+                            The email and password that you entered did not match our records. Please double-check and try again.
+                            </Typography>
+                        ) : (
+                            <Typography/>
+                        )}
                     <Button 
                         type="submit" 
                         variant="outlined" 
@@ -133,29 +122,33 @@ export class Signup extends Component {
                         className={classes.submitButton}
                         disabled={loading}
                     >
-                        Signup
+                        Login
                         {loading && (
                             <CircularProgress className={classes.loadingSpinner} size={30}/>
                         )}
                     </Button>
                     <br/>
-                    <small>Already have an account? Login <Link to="/login">here</Link></small>
+                    <small>Need an account? Sign Up <Link to="/signup">here</Link></small>
                 </form>
             </div>
         )
     }
 }
 
-Signup.propTypes = {
+Welcome.propTypes = {
     classes: PropTypes.object.isRequired,
+    loginUser: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     UI: PropTypes.object.isRequired,
-    signupUser: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     user: state.user,
     UI: state.UI
 })
 
-export default connect(mapStateToProps, { signupUser })(withStyles(styles)(Signup));
+const mapActionsToProps =  {
+    loginUser
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Welcome))
