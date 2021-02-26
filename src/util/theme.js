@@ -38,6 +38,11 @@ export default {
         border: '1px solid #6a22a1',
         marginTop: '10px'
     },
+    submitButtonNav: {
+      color: '#6a22a1',
+      border: '1px solid #6a22a1',
+      marginTop: '10px'
+  },
     errorMessage: {
         color: 'red',
         fontSize: '0.8rem',

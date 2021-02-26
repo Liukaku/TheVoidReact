@@ -31,23 +31,27 @@ const styles = theme => ({
     },
     loginForm:{
         minWidth: "500px",
-        color: '#fff',
+        color: '#fff !important',
         float: 'right',
-        paddingRight: '20px'
+        marginRight: '80px'
     },
     wrapperDiv:{
         width: "100vw",
-        display: "flex",
         
     },
     navContainer:{
         padding: "0px",
-       
-        
     },
     navButtons: {
         margin: "auto",
         marginLeft: "46vw"
+    },
+    loginSubmitButtonDisabled:{
+        color: '#777',
+        borderColor: '#777',
+    },
+    MuiInputLabel:{
+        color: '#777'
     }
 
 })
@@ -122,11 +126,6 @@ func(){/*
 
                     ) : (
                         <div className={classes.wrapperDiv}>
-                            <div className={classes.navButtons}>
-                                <Button color='inherit' id="loginLink" component={Link} to="/login">Login</Button>
-
-                                <Button color='inherit' id="signupLink" component={Link} to="/signup">Sign up</Button>
-                            </div>
                     <form noValidate onSubmit={this.handleSubmit} className={classes.loginForm}>
                         <TextField 
                             id="email" 
@@ -163,7 +162,7 @@ func(){/*
                             type="submit" 
                             variant="outlined" 
                             color="secondary" 
-                            classes={{root: "submitButton", disabled: "loginSubmitButtonDisabled"} }
+                            classes={{root: "submitButtonNav", disabled: "loginSubmitButtonDisabled"} }
                             disabled={disabled}
                         >
                             Login

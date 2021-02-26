@@ -12,23 +12,30 @@ code {
     monospace;
 }
 
-.NavBar-wrapperDiv-15 form input {
-  color: #fff !important;
-}
 
-.NavBar-wrapperDiv-15 form label {
+
+.MuiInputLabel-root {
   color: #777 !important;
 }
 
-.NavBar-wrapperDiv-15 form button:disabled {
+.loginSubmitButtonDisabled {
+  margin: 10px 0px !important;
   color: #777 !important;
   border-color: #777 !important;
 }
 
-.NavBar-wrapperDiv-15 form button {
+.submitButtonNav {
   margin: 10px 0px !important;
 }
 
-.navContainer{
+.navContainer {
   padding: 0px !important;
+}
+
+.MuiFilledInput-input {
+  color: #fff !important;
+}
+
+.Mui-disabled {
+  color: rgb(189, 189, 189)
 }
